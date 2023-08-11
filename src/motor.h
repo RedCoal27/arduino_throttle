@@ -31,13 +31,21 @@ private:
     float* Tension;
     bool Open;
     bool Closed;
-    int steps_left;
+    uint16_t steps_left;
+    uint8_t delta_home;
 public:
+    uint16_t position;
     Motor();
     ~Motor();
-    bool read();
+    void send_state();
+    void read_tension();
+    bool has_to_stop();
     void send_data(int);
-    void reset_tension();
-    void step(int steps_to_move);
+    uint8_t read_state();
+    uint16_t step(uint16_t steps_to_move, bool bypass);
+    void move_at_position(uint16_t new_position);
+    void home();
+    void open();
+    void close();
 };
 
