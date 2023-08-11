@@ -30,7 +30,7 @@ void Motor::read_tension(){
     delete[] Temp;
 }
 
-uint8_t Motor::read_state(){
+uint16_t Motor::read_state(){
     Open = digitalRead(OpenSignal);
     Closed = digitalRead(ClosedSignal);
     return (Open<<1 | Closed);
@@ -133,13 +133,11 @@ void Motor::home(){
     step(-(position%4), true);//pour bien placer les pas sur un vrai 0
     delay(100);
     position = 0;
-    Serial.println(position);
     step(1, false);
 
     while(Closed == 1){
         step(1, false);
         read_state();
-        Serial.println(Closed);
     };
     step(-1,true);
     delta_home = position;
@@ -147,10 +145,10 @@ void Motor::home(){
 
 void Motor::open(){
     move_at_position(1000);
-    Serial.println(position);
+    // Serial.println(position);
 }
 
 void Motor::close(){
     move_at_position(0);
-    Serial.println(position);
+    // Serial.println(position);
 }
