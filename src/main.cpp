@@ -22,24 +22,24 @@ void interrupt_b(){
 
 // Cette fonction est appelée lorsque des données sont reçues d'un maître I2C
 void receiveData(int numBytes) {
-  // if(numBytes == 1){
-  //   _register = Wire.read(); // Lisez la valeur envoyée par le maître I2C
-  //   return;
-  // }
-  // int steps = Wire.read()<<8 | Wire.read();
-  // _Motor.move_at_position(steps);
+  if(numBytes == 1){
+    _register = Wire.read(); // Lisez la valeur envoyée par le maître I2C
+    return;
+  }
+  int steps = Wire.read()<<8 | Wire.read();
+  _Motor.move_at_position(steps);
 }
 
 // Cette fonction est appelée lorsque le maître I2C demande des données
 void sendData() {
-  // uint16_t sensorData = 0;
-  // if(_register==0x01)
-  //   sensorData = _Motor.read_state();
-  // if(_register==0x02)
-  //   sensorData = _Motor.position;
-  // Wire.write(sensorData>>8 & 0xFF); // Envoyez les données au maître I2C
-  // Wire.write(sensorData & 0xFF);
-  // _register = 0;
+  int sensorData = 0;
+  if(_register==0x01)
+    sensorData = _Motor.read_state();
+  if(_register==0x02)
+    sensorData = _Motor.position;
+  Wire.write(sensorData>>8 & 0xFF); // Envoyez les données au maître I2C
+  Wire.write(sensorData & 0xFF);
+  _register = 0;
 }
 
 
@@ -59,8 +59,8 @@ void setup() {
 }
 
 void loop() {
-  _Motor.open();
-  delay(2000);
-  _Motor.close();
-  delay(2000);
+  // _Motor.open();
+  // delay(2000);
+  // _Motor.close();
+  // delay(2000);
 }

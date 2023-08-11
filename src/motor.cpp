@@ -65,7 +65,7 @@ void Motor::send_state(){
  * Moves the motor steps_to_move steps.  If the number is negative,
  * the motor moves in the reverse direction.
  */
-uint16_t Motor::step(uint16_t steps_to_move, bool bypass)
+int Motor::step(int steps_to_move, bool bypass)
 {
     steps_left = abs(steps_to_move); // how many steps to take
     // determine direction based on whether steps_to_mode is + or -:
@@ -122,7 +122,7 @@ uint16_t Motor::step(uint16_t steps_to_move, bool bypass)
     return 0;
 }
 
-void Motor::move_at_position(uint16_t new_position){
+void Motor::move_at_position(int new_position){
     step(new_position-position,false);
 }
 
