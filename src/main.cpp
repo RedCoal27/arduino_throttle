@@ -68,6 +68,9 @@ void setup() {
 void loop() {
   if(last_steps_value != steps_to_move){
     last_steps_value = steps_to_move;
-    _Motor.move_at_position(steps_to_move);
+    if(steps_to_move = -1)
+      _Motor.home();
+    else
+      _Motor.move_at_position(steps_to_move);
   }
 }
