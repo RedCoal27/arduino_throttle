@@ -5,8 +5,8 @@
 Motor _Motor;
 uint8_t _register = 0;
 
-uint16_t last_steps_value = 0;
-uint16_t steps_to_move = 0;
+int last_steps_value = 0;
+int steps_to_move = 0;
 
 // Adresse I2C de l'esclave
 #define I2C_ADDRESS 0x01
@@ -37,16 +37,31 @@ void receiveData(int numBytes) {
 // Cette fonction est appelée lorsque le maître I2C demande des données
 void sendData() {
   int data = 0;
-  if(_register==0x01){
-    data = _Motor.read_state();
+  switch(_register){
+    case 0x01:
+      data = _Motor.read_state();
+      break;
+    case 0x02:
+      data = _Motor.position;
+      break;
+    case 0x03:
+      data = _Motor.delta_home;
+      break;
+    case 0x04:
+    case 0x05:
+    case 0x06:
+    case 0x07:
+      data = _Motor.read_tension(_register - 4);
+      break;
+    default:
+      break;
   }
-  if(_register==0x02){
-    data = _Motor.position;
-  }
+  
   Wire.write(data>>8 & 0xFF); // Envoyez les données au maître I2C
   Wire.write(data & 0xFF);
   _register = 0;
 }
+
 
 
 void setup() {
@@ -68,7 +83,7 @@ void setup() {
 void loop() {
   if(last_steps_value != steps_to_move){
     last_steps_value = steps_to_move;
-    if(steps_to_move = -1)
+    if(steps_to_move == -100)
       _Motor.home();
     else
       _Motor.move_at_position(steps_to_move);

@@ -18,17 +18,27 @@ Motor::~Motor()
     delete[] Tension;
 }
 
-void Motor::read_tension(){
-    float* Temp = new float[4];
-    Temp[0] = float((analogRead(Tension1))) / 1023 * 5;
-    Temp[1] = float((analogRead(Tension2))) / 1023 * 5;
-    Temp[2] = float((analogRead(Tension3))) / 1023 * 5;
-    Temp[3] = float((analogRead(Tension4))) / 1023 * 5;
-    for(uint8_t i= 0; i<4;i++)
-        if(Temp[i]>Tension[i])
-            Tension[i] = Temp[i];
-    delete[] Temp;
+int Motor::read_tension(uint8_t input){
+    int tension = 0;
+    switch(input){
+        case 0:
+            tension = analogRead(Tension1);
+            break;
+        case 1:
+            tension = analogRead(Tension2);
+            break;
+        case 2:
+            tension = analogRead(Tension3);
+            break;
+        case 3:
+            tension = analogRead(Tension4);
+            break;
+        default:
+            break;
+    }
+    return tension;
 }
+
 
 uint16_t Motor::read_state(){
     Open = digitalRead(OpenSignal);
@@ -139,12 +149,14 @@ void Motor::home(){
         step(1, false);
         read_state();
     };
-    step(-1,true);
     delta_home = position;
+    step(-100,false);
+    delta_home = delta_home - position; //différence activation désactivation capteur dans un sens puis l'autre
+    position = 0;
 }
 
 void Motor::open(){
-    move_at_position(1000);
+    move_at_position(800);
     // Serial.println(position);
 }
 

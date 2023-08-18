@@ -32,14 +32,14 @@ private:
     bool Open;
     bool Closed;
     int steps_left;
-    uint8_t delta_home;
     bool available;
 public:
     int position;
+    uint8_t delta_home;
     Motor();
     ~Motor();
     void send_state();
-    void read_tension();
+    int read_tension(uint8_t);
     bool has_to_stop();
     void send_data(int);
     uint16_t read_state();
@@ -48,6 +48,5 @@ public:
     void home();
     void open();
     void close();
-    void is_available();
 };
 
