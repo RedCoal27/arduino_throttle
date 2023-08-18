@@ -75,9 +75,9 @@ void setup() {
   Wire.begin(I2C_ADDRESS); // Démarrez I2C en tant qu'esclave avec l'adresse définie
   Wire.onReceive(receiveData); // Fonction à appeler lorsque des données sont reçues
   Wire.onRequest(sendData); // Fonction à appeler lorsque des données sont demandées
-  delay(500);
-  _Motor.home();
-  delay(1000);
+  // delay(500);
+  // _Motor.home();
+  // delay(1000);
 }
 
 void loop() {

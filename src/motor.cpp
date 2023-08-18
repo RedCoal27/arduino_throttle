@@ -138,20 +138,21 @@ void Motor::move_at_position(int new_position){
 
 void Motor::home(){
     position = 1000;
-    step(100, true);
-    step(-1000, true);
-    step(-(position%4), true);//pour bien placer les pas sur un vrai 0
+    step(100, false);
+    step(-1000, false);
     delay(100);
     position = 0;
     step(1, false);
-
+    setSpeed(Speed/4);
     while(Closed == 1){
         step(1, false);
+        delay(5);
         read_state();
     };
     delta_home = position;
-    step(-100,false);
+    step(-1,false);
     delta_home = delta_home - position; //différence activation désactivation capteur dans un sens puis l'autre
+    setSpeed(Speed);
     position = 0;
 }
 
