@@ -39,10 +39,10 @@ void sendData() {
   int data = 0;
   switch(_register){
     case 0x01:
-      data = _Motor.read_state();
+      data = _Motor.position;
       break;
     case 0x02:
-      data = _Motor.position;
+      data = _Motor.read_state();
       break;
     case 0x03:
       data = _Motor.delta_home;

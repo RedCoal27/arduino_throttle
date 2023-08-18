@@ -77,6 +77,7 @@ void Motor::send_state(){
  */
 int Motor::step(int steps_to_move, bool bypass)
 {
+    digitalWrite(enabled_motor,1);
     steps_left = abs(steps_to_move); // how many steps to take
     // determine direction based on whether steps_to_mode is + or -:
     if (steps_to_move > 0)
@@ -120,6 +121,7 @@ int Motor::step(int steps_to_move, bool bypass)
             //si bypass est à 0 et qu'un capteur est détécté, arreter la et retourner le nombre de pas restant non effectué
             if(stop == 1){
                 if(bypass == 0){
+                    // digitalWrite(enabled_motor,0);//coupe le moteur
                     return steps_left;
                 }
                 else{ 
@@ -129,6 +131,7 @@ int Motor::step(int steps_to_move, bool bypass)
             }
         }
     };
+    // digitalWrite(enabled_motor,0);//coupe le moteur
     return 0;
 }
 
