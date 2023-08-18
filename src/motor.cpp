@@ -75,7 +75,7 @@ void Motor::send_state(){
  * Moves the motor steps_to_move steps.  If the number is negative,
  * the motor moves in the reverse direction.
  */
-int Motor::step(int steps_to_move, bool bypass)
+int Motor::step(int steps_to_move)
 {
     digitalWrite(enabled_motor,1);
     steps_left = abs(steps_to_move); // how many steps to take
@@ -89,14 +89,6 @@ int Motor::step(int steps_to_move, bool bypass)
         direction = 0;
     }
     bool stop = has_to_stop();
-    if(stop==1){
-        if(bypass==0)
-            steps_left = 0;
-        else{
-            if(steps_left > 100)
-                steps_left = 100;
-        }
-    }
 
     // decrement the number of steps, moving one step each time:
     while (steps_left > 0)
@@ -120,14 +112,8 @@ int Motor::step(int steps_to_move, bool bypass)
             stop = has_to_stop();
             //si bypass est à 0 et qu'un capteur est détécté, arreter la et retourner le nombre de pas restant non effectué
             if(stop == 1){
-                if(bypass == 0){
                     // digitalWrite(enabled_motor,0);//coupe le moteur
                     return steps_left;
-                }
-                else{ 
-                    if(steps_left > 100)
-                        steps_left = 100;
-                }
             }
         }
     };
@@ -136,24 +122,24 @@ int Motor::step(int steps_to_move, bool bypass)
 }
 
 void Motor::move_at_position(int new_position){
-    step(new_position-position,false);
+    step(new_position-position);
 }
 
 void Motor::home(){
     position = 1000;
-    step(100, false);
-    step(-1000, false);
+    step(200);
+    step(-1000);
     delay(100);
     position = 0;
-    step(1, false);
+    step(1);
     setSpeed(Speed/4);
     while(Closed == 1){
-        step(1, false);
+        step(1);
         delay(5);
         read_state();
     };
     delta_home = position;
-    step(-1,false);
+    step(-1);
     delta_home = delta_home - position; //différence activation désactivation capteur dans un sens puis l'autre
     setSpeed(Speed);
     position = 0;

@@ -77,7 +77,7 @@ void setup() {
   Wire.onRequest(sendData); // Fonction à appeler lorsque des données sont demandées
   // delay(500);
   // _Motor.home();
-  // delay(1000);
+  delay(1000);
 }
 
 void loop() {

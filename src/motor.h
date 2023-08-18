@@ -43,7 +43,7 @@ public:
     bool has_to_stop();
     void send_data(int);
     uint16_t read_state();
-    int step(int steps_to_move, bool bypass);
+    int step(int steps_to_move);
     void move_at_position(int new_position);
     void home();
     void open();
